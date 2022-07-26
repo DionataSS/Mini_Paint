@@ -1,0 +1,89 @@
+<meta charset="UTF-8">
+<canvas width="800" height="600"></canvas>
+<script>
+    function drawBox(x, y, size, color) {
+
+        pencil.fillStyle = color;
+        pencil.fillRect(x, y, size, size)
+        pencil.fill();
+    }
+    function drawCircle(x, y, ray, color) {
+
+        pencil.fillStyle = color;
+        pencil.beginPath();
+        pencil.arc(x, y, ray, 0, 2 * 3.14);
+        pencil.fill();
+    }
+    function drawPallete() {
+
+        drawBox(xred, ybox, sizeBox, 'red');
+        drawBox(xgreen, ybox, sizeBox, 'green');
+        drawBox(xblue, ybox, sizeBox, 'blue');
+    }
+    function mouseMove(event) {
+
+        var x = event.pageX - screen.offsetLeft;
+        var y = event.pageY - screen.offsetTop;
+
+        if(draw && freeDraw(x,y)) {
+
+            drawCircle(x, y, 3, colorX);
+        }
+    }
+    function drawOn() {
+
+        draw = true;
+    }
+    function drawOff() {
+
+        draw = false;
+    }
+    function freeDraw(x, y) {
+
+         if(x >= 0 && x < 3*sizeBox && y >= 0 && y < sizeBox) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+function selectColor(event) {
+
+        var x = event.pageX - screen.offsetLeft;
+        var y = event.pageY - screen.offsetTop;
+
+        if (y > ybox && y < ybox + sizeBox) {
+
+            if (x > xred && x < xred + sizeBox) {
+
+                colorX = 'red';
+
+            } else if (x > xgreen && x < xgreen + sizeBox) {
+
+                colorX = 'green';
+
+            } else if (x > xblue && x < xblue + sizeBox) {
+
+                colorX = 'blue';
+            }
+        }
+    }
+    var screen = document.querySelector('canvas');
+    var pencil = screen.getContext('2d');
+   
+    pencil.fillStyle = 'lightgray';
+    pencil.fillRect(0, 0, 800, 600);
+    
+    var draw = false;
+    var colorX = 'blue';
+    var xred = 0;
+    var xgreen  = 50;
+    var xblue = 100;
+    var ybox = 0;
+    var sizeBox = 50;
+    
+    drawPallete();
+    screen.onmousemove = mouseMove;
+    screen.onmousedown = drawOn;
+    screen.onmouseup = drawOff;
+    screen.onclick = selectColor;
+</script>
